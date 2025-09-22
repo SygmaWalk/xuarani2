@@ -1,36 +1,27 @@
 class Ability
-    include CanCan::Ability
+  include CanCan::Ability
 
-    def initialize(user)
-        user ||= User.new
+  def initialize(user)
+    user ||= User.new
 
-        return administrador_rules if user.has_role?(:administrador)
-        preceptor_roles if user.has_role?(:preceptor)
-        docente_rules if user.has_role?(:docente)
-        alumno_rules if user.has_role?(:alumno)
-
-        # Roles creados a futuro solo lectura de recursos públicos (sin Model)
-        guest_rules if user.roles.empty?
-
+    if user.has_role?(:administrador)
+      can :manage, :all
+      can :read, :dashboard
+      return
     end
 
-    def administrador_rules
-        can :manage, :all
+    if user.has_role?(:preceptor) || user.has_role?(:docente) || user.has_role?(:alumno)
+      can :read, :all
+      can :read, :dashboard
+      return
     end
 
-    def preceptor_roles
-        can :read, :all
-    end
+    # Invitado (sin roles)
+    guest_rules
+    can :read, :dashboard
+  end
 
-    def docente_rules
-        can :read, :all
-    end
-
-    def alumno_rules
-        can :read, :all
-    end
-
-    def guest_rules
-        can :read, :publico
-    end
+  def guest_rules
+    can :read, :publico
+  end
 end

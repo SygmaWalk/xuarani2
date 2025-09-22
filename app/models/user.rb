@@ -24,7 +24,7 @@ class User < ApplicationRecord
 
   scope :with_role, ->(nombre) {
     joins(:roles)
-      .where("LOWER(roles.nombre) = ?", nombre.to_s.downcase)
+      .where("LOWER(roles.name) = ?", nombre.to_s.downcase)
       .distinct
   }
 
@@ -35,7 +35,7 @@ class User < ApplicationRecord
   def role_names
     # Memoización de roles
     # Retorna un array de los roles (lowercase)
-    @roles_array ||= roles.pluck(:nombre).map { |n| n.to_s.downcase }
+    @roles_array ||= roles.pluck(:name).map { |n| n.to_s.downcase }
   end
 
   def has_role?(role)

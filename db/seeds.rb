@@ -1,10 +1,9 @@
-
-["Administrador", "Preceptor", "Docente", "Alumno"].each do |role_name|
+["administrador", "preceptor", "docente", "alumno"].each do |role_name|
   Role.find_or_create_by!(name: role_name)
 end
 
-puts "Roles creados: #{Role.pluck(:name).join(', ')}"
 
+puts "Roles creados: #{Role.pluck(:name).join(', ')}"
 
 admin_email = "admin@admin.com"
 admin_pass  = "admin8532"

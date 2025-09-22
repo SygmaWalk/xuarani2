@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-    authorize_resource class: false
-    def index
-    end
+  def index
+    authorize! :read, :dashboard
+  end
 end
